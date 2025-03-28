@@ -50,12 +50,15 @@ app.get("/docentes/:matricula", (req, res) => {
   
 
 // Rota para adicionar um docente
-app.post("/docentes", (req, res) => {
+app.post("/docentes/criar", (req, res) => {
     const { matricula, nome, email, dataNascimento, dataAdmissao, situacao, areaConcurso, status } = req.body;
     const sql = "INSERT INTO docentes (matricula_doc, nome_doc, email_doc, data_nasci_doc, data_adimissao_doc, situacao_doc, area_concurso_doc, status_doc) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    console.log(status)
     
+
     db.query(sql, [matricula, nome, email, dataNascimento, dataAdmissao, situacao, areaConcurso, status], (err, result) => {
         if (err) {
+            console.error("Erro ao inserir no MySQL:", err.sqlMessage || err);
             res.status(500).json({ error: err.message });
         } else {
             res.json({ id: result.insertId, message: "Docente adicionado com sucesso!" });
@@ -64,7 +67,7 @@ app.post("/docentes", (req, res) => {
 });
 
 //Rota para atualizar docentes
-app.put("/docentes/:matricula", (req, res) => {
+app.put("/docentes/editar:matricula", (req, res) => {
     const { matricula } = req.params;
     const { nome, email, dataNascimento, dataAdmissao, situacao, areaConcurso, status } = req.body;
   
