@@ -67,18 +67,34 @@ app.post("/docentes/criar", (req, res) => {
 });
 
 //Rota para atualizar docentes
-app.put("/docentes/editar:matricula", (req, res) => {
-    const { matricula } = req.params;
-    const { nome, email, dataNascimento, dataAdmissao, situacao, areaConcurso, status } = req.body;
+app.put("/docentes/editar/:matricula", (req, res) => {
+    
+    const { matricula,nome, email, dataNascimento, dataAdmissao, situacao, areaConcurso, status } = req.body;
+    console.log(status)
+    console.log(req.body)
   
     const sql = "UPDATE docentes SET nome_doc=?, email_doc=?, data_nasci_doc=?, data_adimissao_doc=?, situacao_doc=?, area_concurso_doc=?, status_doc=? WHERE matricula_doc=?";
-    db.query(sql, [nome, email, dataNascimento, dataAdmissao, situacao, areaConcurso, status, matricula], (err, result) => {
-      if (err) {
+    db.query(sql, [nome, email, dataNascimento, dataAdmissao, situacao, areaConcurso,status, matricula], (err) => {
+      if (err) { 
+        console.log(err)
         return res.status(500).json({ error: "Erro ao atualizar docente" });
       }
       res.json({ message: "Docente atualizado com sucesso!" });
     });
   });
+
+  //Rota para excluir docentes
+  app.delete("/docentes/excluir",(req, res) =>{
+    const {matricula, nome, email, dataNascimento, dataAdmissao, situacao, areaConcurso, status} = req.body
+    const sql = "DELETE from docentes where matricula_doc = ?;";
+    db.query(sql, [nome, email, dataNascimento, dataAdmissao, situacao, areaConcurso,status, matricula], (err) => {
+      if (err) { 
+        console.log(err)
+        return res.status(500).json({ error: "Erro ao atualizar docente" });
+      }
+      res.json({ message: "Docente atualizado com sucesso!" });
+    });
+  })
   
 
 app.listen(port, () => {
