@@ -70,6 +70,7 @@ app.post("/docentes/criar", (req, res) => {
 app.put("/docentes/editar/:matricula", (req, res) => {
     
     const { matricula,nome, email, dataNascimento, dataAdmissao, situacao, areaConcurso, status } = req.body;
+    
     console.log(status)
     console.log(req.body)
   
@@ -84,10 +85,10 @@ app.put("/docentes/editar/:matricula", (req, res) => {
   });
 
   //Rota para excluir docentes
-  app.delete("/docentes/excluir",(req, res) =>{
-    const {matricula, nome, email, dataNascimento, dataAdmissao, situacao, areaConcurso, status} = req.body
+  app.delete("/docentes/excluir/:matricula",(req, res) =>{
+    const { matricula } = req.params;
     const sql = "DELETE from docentes where matricula_doc = ?;";
-    db.query(sql, [nome, email, dataNascimento, dataAdmissao, situacao, areaConcurso,status, matricula], (err) => {
+    db.query(sql, [matricula] , (err) => {
       if (err) { 
         console.log(err)
         return res.status(500).json({ error: "Erro ao atualizar docente" });
